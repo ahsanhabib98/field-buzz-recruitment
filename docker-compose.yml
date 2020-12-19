@@ -1,0 +1,23 @@
+version: "2"
+services:
+  backend:
+    network_mode: host
+    build: ./backend
+    command: python manage.py runserver 0.0.0.0:8000
+    container_name: backend
+    volumes:
+      - ./backend:/app/
+    ports:
+      - 8000:8000
+  frontend:
+    network_mode: host
+    build: ./frontend
+    command: npm start
+    container_name: frontend
+    volumes:
+      - ./frontend:/app/
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
