@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import { Redirect } from "react-router-dom";
-import {Button, Form, Spinner} from "react-bootstrap";
+import {Button, Card, Container, Form, Spinner} from "react-bootstrap";
 import * as actions from "../store/actions/auth"
 
 class LoginForm extends React.Component {
@@ -45,6 +45,15 @@ class LoginForm extends React.Component {
 
         return (
             <div>
+                <Container>
+                    <Card>
+                      <Card.Body>
+                          <p>Use this credentials for login:</p>
+                        <p>Username: ahredoan@gmail.com</p>
+                        <p>Password: p6MnIgh75</p>
+                      </Card.Body>
+                    </Card>
+                </Container>
                 {errorMessage}
                 {loading ? (
                     <Spinner animation="border" />
