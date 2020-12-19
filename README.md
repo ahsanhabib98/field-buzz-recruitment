@@ -1,4 +1,4 @@
-# Field buzz recruitment assignment
+# Field buzz recruitment assignment  
 ####Run the following commands to get started(with docker):
 
 ````
@@ -7,7 +7,7 @@ docker-compose up
 ````
 After waiting for while, visit following urls:
 
-* UI: http://localhost:3000/
+* UI: http://localhost:3000/  
 ####Run the following commands to get started manually(without docker):
 ###### For backend
 ````
