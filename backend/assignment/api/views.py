@@ -1,3 +1,5 @@
+from base64 import b64encode
+
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -41,8 +43,11 @@ class InformationCreateView(CreateAPIView):
         login_res = requests.post(url=login_url, data=json.dumps(login_data), headers=headers1)
 
         token = login_res.json()['token']
+        # For test
+        # url = 'https://recruitment.fisdev.com/api/v0/recruiting-entities/'
+        # For submit real data
+        url = 'https://recruitment.fisdev.com/api/v1/recruiting-entities/'
 
-        url = 'https://recruitment.fisdev.com/api/v0/recruiting-entities/'
         data = response.data
         headers2 = {'Content-type': 'application/json', 'Authorization': 'Token {}'.format(token)}
         info_res = requests.post(url, data=json.dumps(data), headers=headers2)
@@ -63,6 +68,7 @@ class CVUploadView(UpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save()
+
         print('----------------------')
         print('CV file post working')
 
@@ -72,23 +78,20 @@ class CVUploadView(UpdateAPIView):
         login_res = requests.post(url=login_url, data=json.dumps(login_data), headers=headers1)
 
         token = login_res.json()['token']
-
         file_token_id = serializer.data['file_token_id']
-        localFilePath = 'backend/media/Ahsan_Habib.pdf'
-        # data = open(localFilePath, 'rb').read()
-        files = {'file': open(localFilePath, 'rb')}
 
         headers2 = {
-            'Accept': "application/pdf",
-            'Content-Type': "application/pdf",
+            'Content-Type': "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
             'Authorization': 'Token {}'.format(token)
         }
-        cv_data = files
         cv_url = 'https://recruitment.fisdev.com/api/file-object/{}/'.format(file_token_id)
 
-        cv_res = requests.put(url=cv_url, files=cv_data, headers=headers2)
+        cv_file = serializer.validated_data['cv_file']
+        file = b64encode(cv_file.read()).decode('utf-8')
+        obj = {
+            'file': file
+        }
+        cv_res = requests.put(url=cv_url, data=obj, headers=headers2)
         print(cv_res.json())
-        print('cv res -----------------------------------------------')
-        print(info_res.json())
         print('CV file post done')
         print('----------------------')

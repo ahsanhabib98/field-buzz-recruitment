@@ -1,7 +1,6 @@
 import React, {Fragment} from "react";
 import axios from "axios";
 import {Alert, Button, Form} from "react-bootstrap";
-import  { Redirect } from 'react-router-dom';
 
 import {infoURL, cvUploadURL} from "../constants";
 import {connect} from "react-redux";
@@ -34,7 +33,13 @@ class InfoForm extends React.Component {
       }
     };
 
-    handleChange = e => {
+    componentDidUpdate() {
+      if(!this.props.isAuthenticated) {
+        this.props.history.push('/login')
+      }
+    };
+
+  handleChange = e => {
         this.setState({
             [e.target.name]: e.target.value
         })

@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import {Button, Form, Spinner} from "react-bootstrap";
 import * as actions from "../store/actions/auth"
 
