@@ -5,6 +5,8 @@ from assignment.models import (
     CVFile
 )
 
+import datetime
+
 
 class CVInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,6 +16,8 @@ class CVInfoSerializer(serializers.ModelSerializer):
 
 class InformationSerializer(serializers.ModelSerializer):
     cv_file = CVInfoSerializer(required=False)
+    on_spot_update_time = serializers.SerializerMethodField()
+    on_spot_creation_time = serializers.SerializerMethodField()
 
     class Meta:
         model = RecruitmentInformation
@@ -22,8 +26,16 @@ class InformationSerializer(serializers.ModelSerializer):
                   'field_buzz_reference', 'github_project_url', 'cv_file', 'on_spot_update_time',
                   'on_spot_creation_time',)
 
+    def get_on_spot_update_time(self, obj):
+        return int(obj.on_spot_update_time.timestamp())
+
+    def get_on_spot_creation_time(self, obj):
+        return int(obj.on_spot_creation_time.timestamp())
+
 
 class CVFileUploadSerializer(serializers.ModelSerializer):
+    file_token_id = serializers.IntegerField(required=False)
+
     class Meta:
         model = CVFile
-        fields = ('cv_file',)
+        fields = ('cv_file', 'file_token_id')

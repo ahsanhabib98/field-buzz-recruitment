@@ -24,7 +24,8 @@ class InfoForm extends React.Component {
       cv_file: "",
       errors: {},
       formValid: true,
-      tsync_id: ''
+      tsync_id: '',
+      file_token_id: ''
     };
 
     componentDidMount() {
@@ -169,6 +170,7 @@ class InfoForm extends React.Component {
         delete form_data.errors
         delete form_data.formValid
         delete form_data.tsync_id
+        delete form_data.file_token_id
 
         let contentType = {}
         contentType = {
@@ -177,9 +179,10 @@ class InfoForm extends React.Component {
           }}
         await axios.post(infoURL, form_data, contentType)
           .then(res => {
-            if (res.status === 201) {
+            if (res.data.status === 201) {
               this.setState({
-                  tsync_id: res.data.cv_file.tsync_id
+                  tsync_id: res.data.data.cv_file.tsync_id,
+                  file_token_id: res.data.data.cv_file.id
               })
             }
           })
@@ -191,9 +194,11 @@ class InfoForm extends React.Component {
           }}
         let form_data1 = new FormData();
         form_data1.append('cv_file', this.state.cv_file, this.state.cv_file.name);
+        form_data1.append('file_token_id', this.state.file_token_id);
         await axios.put(cvUploadURL(this.state.tsync_id), form_data1, contentType1)
           .then(res => {
             if (res.status === 201) {
+              console.log('working');
             }
           })
         this.props.history.push('/message');
